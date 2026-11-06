@@ -22,12 +22,60 @@
   <button class="shame-dismiss" id="shame-dismiss">I accept my shame. Continue →</button>
 </div>
 
+<!-- STEVEN HE VIDEO FLASH OVERLAY -->
+<div class="steven-overlay" id="steven-overlay" aria-hidden="true">
+  <div class="steven-backdrop"></div>
+  <div class="steven-modal">
+    <div class="steven-top-banner">
+      <span class="steven-flair">💥</span>
+      <span class="steven-title">EMOTIONAL DAMAGE!</span>
+      <span class="steven-flair">💥</span>
+    </div>
+    <div class="steven-video-frame">
+      <video id="steven-video" playsinline preload="auto">
+        <source src="steven_he.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="steven-sub">STEVEN HE HAS SPOKEN 🩴</div>
+    <button class="steven-skip-btn" id="steven-skip-btn">✕ Skip Shame</button>
+  </div>
+</div>
+
+<!-- SUBWAY SURFERS BRAINROT CORNER WIDGET -->
+<div class="subway-widget" id="subway-widget">
+  <div class="subway-header">
+    <div class="subway-tag">
+      <span class="subway-live-dot"></span>
+      <span class="subway-label">ATTENTION ANCHOR 🏄</span>
+    </div>
+    <div class="subway-controls">
+      <button class="subway-btn" id="subway-audio-toggle" title="Toggle audio" aria-label="Toggle audio">🔇</button>
+      <button class="subway-btn" id="subway-toggle-btn" title="Minimize / Restore" aria-label="Minimize or Restore">−</button>
+    </div>
+  </div>
+  <div class="subway-body" id="subway-body">
+    <video id="subway-video" autoplay loop muted playsinline preload="auto">
+      <source src="subway_surfers.mp4" type="video/mp4" />
+    </video>
+    <div class="subway-overlay-bar">
+      <span class="subway-stat" id="subway-dopamine">DOPAMINE: 99.8%</span>
+      <span class="subway-speed">SUBWAY OVERLOAD</span>
+    </div>
+  </div>
+  <div class="subway-footer" id="subway-footer">
+    <span id="subway-ticker-text">Subway Surfers preventing dopamine bankruptcy...</span>
+  </div>
+</div>
+
 <!-- HEADER -->
 <header>
-  <div class="site-title">EMOTIONAL DAMAGE</div>
+  <div class="site-title" id="site-title-trigger" style="cursor: pointer;" title="Click for Emotional Damage!">EMOTIONAL DAMAGE</div>
   <div class="site-title" style="font-size: clamp(1.2rem, 4vw, 2.8rem); color: #bf00ff; text-shadow: 0 0 20px #bf00ff, 0 0 40px #ff1a1a;">CALCULATOR</div>
   <div class="site-subtitle">Aura Loss · Rizz Drain · Sigma Collapse Assessment Tool</div>
   <div class="emoji-row">💀 📉 😭 🔥 💔</div>
+  <div class="header-action-row">
+    <button class="test-damage-btn" id="test-damage-btn">💥 INSTANT EMOTIONAL DAMAGE FLASH 💥</button>
+  </div>
 </header>
 
 <div class="container">

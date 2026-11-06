@@ -825,3 +825,321 @@ footer strong { color: var(--purple); }
   .incident-grid { grid-template-columns: 1fr 1fr; }
   .report-actions { flex-direction: column; }
 }
+
+/* ── HEADER ACTION BUTTON ── */
+.header-action-row {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+.test-damage-btn {
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  padding: 0.6rem 1.4rem;
+  background: linear-gradient(135deg, rgba(255, 26, 26, 0.25), rgba(191, 0, 255, 0.25));
+  color: var(--white);
+  border: 2px solid var(--red);
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--red-glow);
+  transition: all 0.25s ease;
+}
+.test-damage-btn:hover {
+  transform: scale(1.06);
+  background: var(--red);
+  box-shadow: 0 0 30px var(--red-glow), 0 0 50px var(--purple-glow);
+}
+
+/* ── STEVEN HE VIDEO FLASH OVERLAY ── */
+.steven-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.steven-overlay.active {
+  display: flex;
+}
+.steven-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(160, 0, 0, 0.85) 0%, rgba(10, 0, 10, 0.98) 85%);
+  backdrop-filter: blur(10px);
+  animation: stevenBackdropPulse 0.8s ease-in-out infinite alternate;
+}
+@keyframes stevenBackdropPulse {
+  from { opacity: 0.85; }
+  to { opacity: 1; }
+}
+
+.steven-modal {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 580px;
+  width: 100%;
+  animation: stevenPopIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes stevenPopIn {
+  0% { transform: scale(0.4) rotate(-5deg); opacity: 0; }
+  60% { transform: scale(1.08) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.steven-top-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  animation: bannerShake 0.4s ease-in-out infinite alternate;
+}
+.steven-flair {
+  font-size: 1.8rem;
+}
+.steven-title {
+  font-family: 'Black Ops One', sans-serif;
+  font-size: clamp(1.8rem, 6vw, 3.2rem);
+  color: var(--white);
+  text-shadow:
+    0 0 15px var(--red),
+    0 0 35px var(--red),
+    0 0 70px var(--yellow);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+@keyframes bannerShake {
+  0% { transform: scale(1) translateY(0); }
+  100% { transform: scale(1.05) translateY(-4px); }
+}
+
+.steven-video-frame {
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 4px solid var(--red);
+  box-shadow:
+    0 0 40px var(--red-glow),
+    0 0 90px rgba(255, 26, 26, 0.7),
+    0 20px 50px rgba(0, 0, 0, 0.9);
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.steven-video-frame video {
+  width: 100%;
+  max-height: 55vh;
+  object-fit: contain;
+  display: block;
+}
+
+.steven-sub {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--yellow);
+  margin-top: 0.8rem;
+  text-shadow: 0 0 10px rgba(255, 214, 0, 0.6);
+  text-transform: uppercase;
+}
+
+.steven-skip-btn {
+  margin-top: 0.9rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--muted);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.steven-skip-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-color: #fff;
+}
+
+/* ── SUBWAY SURFERS CORNER WIDGET ── */
+.subway-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 990;
+  width: 210px;
+  background: rgba(14, 0, 20, 0.94);
+  border: 2px solid var(--purple);
+  border-radius: 14px;
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.8),
+    0 0 25px rgba(191, 0, 255, 0.35);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  transition: opacity 0.3s cubic-bezier(0.2, 0.9, 0.3, 1),
+              transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1),
+              visibility 0.3s;
+}
+
+/* Disappear when Emotional Damage flashes */
+.subway-widget.damage-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(40px) scale(0.75) !important;
+}
+
+.subway-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.65rem;
+  background: rgba(191, 0, 255, 0.18);
+  border-bottom: 1px solid rgba(191, 0, 255, 0.3);
+}
+.subway-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.subway-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: liveBlink 1.4s ease-in-out infinite;
+}
+@keyframes liveBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+.subway-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--white);
+}
+
+.subway-controls {
+  display: flex;
+  gap: 0.25rem;
+}
+.subway-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text);
+  border-radius: 4px;
+  width: 22px;
+  height: 22px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.subway-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.subway-body {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  background: #000;
+  overflow: hidden;
+}
+.subway-body video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.subway-overlay-bar {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+.subway-stat {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #00ffea;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 255, 234, 0.3);
+  text-shadow: 0 0 6px #00ffea;
+}
+.subway-speed {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.52rem;
+  font-weight: 700;
+  color: var(--yellow);
+  background: rgba(0, 0, 0, 0.65);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+.subway-footer {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.62rem;
+  color: var(--muted);
+  line-height: 1.3;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
+  min-height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Minimized state */
+.subway-widget.minimized {
+  width: auto;
+  border-radius: 20px;
+}
+.subway-widget.minimized .subway-body,
+.subway-widget.minimized .subway-footer {
+  display: none;
+}
+.subway-widget.minimized .subway-header {
+  border-bottom: none;
+  padding: 0.45rem 0.9rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .subway-widget {
+    width: 140px;
+    bottom: 10px;
+    right: 10px;
+  }
+  .subway-body {
+    height: 170px;
+  }
+  .subway-label {
+    font-size: 0.55rem;
+  }
+  .subway-footer {
+    display: none;
+  }
+}

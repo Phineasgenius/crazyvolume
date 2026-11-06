@@ -618,10 +618,161 @@ function resetAll() {
   showToast('🔄 Reset. Unfortunately, the memories remain.');
 }
 
+// ── STEVEN HE FLASH OVERLAY & SUBWAY SURFERS CONTROLLER ──
+let stevenTimeout = null;
+
+function triggerStevenHeFlash() {
+  const overlay = document.getElementById('steven-overlay');
+  const video = document.getElementById('steven-video');
+  const subwayWidget = document.getElementById('subway-widget');
+  const subwayVideo = document.getElementById('subway-video');
+
+  if (!overlay || !video) return;
+
+  // 1. Hide Subway Surfers while Emotional Damage flashes
+  if (subwayWidget) {
+    subwayWidget.classList.add('damage-hidden');
+    if (subwayVideo && !subwayVideo.paused) {
+      subwayVideo.pause();
+    }
+  }
+
+  // 2. Screen shake & red flash
+  flashDamage();
+  shakeScreen();
+
+  // 3. Open Steven He overlay
+  overlay.classList.add('active');
+  overlay.setAttribute('aria-hidden', 'false');
+
+  // 4. Play video with sound
+  video.currentTime = 0;
+  video.muted = false;
+  video.volume = 1.0;
+
+  const playPromise = video.play();
+  if (playPromise && playPromise.catch) {
+    playPromise.catch(err => {
+      console.warn('Playback notice:', err);
+      video.muted = false;
+      video.play().catch(() => {});
+    });
+  }
+
+  if (stevenTimeout) clearTimeout(stevenTimeout);
+
+  const closeSteven = () => {
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+    video.pause();
+
+    // Restore Subway Surfers and resume playing
+    if (subwayWidget) {
+      subwayWidget.classList.remove('damage-hidden');
+      if (subwayVideo) {
+        subwayVideo.play().catch(() => {});
+      }
+    }
+  };
+
+  video.onended = closeSteven;
+
+  // Fallback in case ended event doesn't fire (clip length ~3.5s)
+  stevenTimeout = setTimeout(closeSteven, 4500);
+
+  const skipBtn = document.getElementById('steven-skip-btn');
+  if (skipBtn) {
+    skipBtn.onclick = (e) => {
+      e.stopPropagation();
+      closeSteven();
+    };
+  }
+
+  overlay.onclick = (e) => {
+    if (e.target === overlay || e.target.classList.contains('steven-backdrop')) {
+      closeSteven();
+    }
+  };
+}
+
+// ── SUBWAY SURFERS WIDGET MANAGER ──
+const SUBWAY_TICKERS = [
+  "Subway Surfers preventing dopamine bankruptcy...",
+  "Attention span maintained: 3.4 seconds 🏃",
+  "Keep watching trains to survive the cringe...",
+  "Subway Surfers carrying your mental health right now",
+  "Subway Surfers sensory overload: ACTIVE",
+  "Dopamine drip feed online... Don't blink!",
+  "Brainrot level: MAXIMUM OVERDRIVE ⚡",
+  "Certified subway surfer sigma grindset 🛹",
+];
+
+function initSubwaySurfers() {
+  const widget = document.getElementById('subway-widget');
+  const video = document.getElementById('subway-video');
+  const muteBtn = document.getElementById('subway-audio-toggle');
+  const toggleBtn = document.getElementById('subway-toggle-btn');
+  const dopamineEl = document.getElementById('subway-dopamine');
+  const tickerEl = document.getElementById('subway-ticker-text');
+
+  if (!widget || !video) return;
+
+  // Ensure autoplay starts
+  video.play().catch(() => {
+    const unlock = () => {
+      video.play().catch(() => {});
+      window.removeEventListener('pointerdown', unlock);
+    };
+    window.addEventListener('pointerdown', unlock);
+  });
+
+  // Sound toggle
+  if (muteBtn) {
+    muteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      video.muted = !video.muted;
+      muteBtn.textContent = video.muted ? '🔇' : '🔊';
+      muteBtn.title = video.muted ? 'Unmute' : 'Mute';
+      showToast(video.muted ? '🔇 Subway Surfers Muted' : '🔊 Subway Surfers Audio Active');
+    });
+  }
+
+  // Minimize / Expand
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isMin = widget.classList.toggle('minimized');
+      toggleBtn.textContent = isMin ? '+' : '−';
+      toggleBtn.title = isMin ? 'Expand' : 'Minimize';
+    });
+  }
+
+  // Restore if clicked while minimized
+  widget.addEventListener('click', () => {
+    if (widget.classList.contains('minimized')) {
+      widget.classList.remove('minimized');
+      if (toggleBtn) toggleBtn.textContent = '−';
+    }
+  });
+
+  // Rotating ticker
+  let tickerIdx = 0;
+  setInterval(() => {
+    tickerIdx = (tickerIdx + 1) % SUBWAY_TICKERS.length;
+    if (tickerEl) tickerEl.textContent = SUBWAY_TICKERS[tickerIdx];
+
+    if (dopamineEl) {
+      const dop = (98.5 + Math.random() * 1.4).toFixed(1);
+      dopamineEl.textContent = `DOPAMINE: ${dop}%`;
+    }
+  }, 3500);
+}
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
   initIncidents();
   initMultipliers();
+  initSubwaySurfers();
 
   document.getElementById('gauntlet-btn').addEventListener('click', startGauntlet);
   document.getElementById('math-submit-btn').addEventListener('click', submitMathAnswer);
@@ -632,6 +783,22 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('shame-dismiss').addEventListener('click', dismissShame);
   document.getElementById('share-btn').addEventListener('click', shareReport);
   document.getElementById('reset-btn').addEventListener('click', resetAll);
+
+  // Trigger buttons for Steven He clip
+  const testDamageBtn = document.getElementById('test-damage-btn');
+  if (testDamageBtn) {
+    testDamageBtn.addEventListener('click', () => {
+      triggerStevenHeFlash();
+      showToast('💥 STEVEN HE: EMOTIONAL DAMAGE!');
+    });
+  }
+
+  const titleTrigger = document.getElementById('site-title-trigger');
+  if (titleTrigger) {
+    titleTrigger.addEventListener('click', () => {
+      triggerStevenHeFlash();
+    });
+  }
 
   updateIncidentSummary();
 

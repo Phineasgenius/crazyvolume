@@ -41,11 +41,22 @@ function playClip(dataUri, fallbackFile) {
   }
 }
 
-// EMOTIONAL DAMAGE — Real Steven He audio clip
+// EMOTIONAL DAMAGE — Steven He video flash & audio
 function playEmotionalDamage() {
-  const played = playClip(typeof SOUND_EMOTIONAL_DAMAGE !== 'undefined' ? SOUND_EMOTIONAL_DAMAGE : null, 'emotional_damage.mp3');
-  if (!played) {
-    playEmotionalDamageSynth();
+  if (typeof triggerStevenHeFlash === 'function') {
+    triggerStevenHeFlash();
+  } else {
+    const video = document.getElementById('steven-video');
+    const overlay = document.getElementById('steven-overlay');
+    if (video && overlay) {
+      overlay.classList.add('active');
+      video.currentTime = 0;
+      video.muted = false;
+      video.play().catch(() => {});
+    } else {
+      const played = playClip(typeof SOUND_EMOTIONAL_DAMAGE !== 'undefined' ? SOUND_EMOTIONAL_DAMAGE : null, 'emotional_damage.mp3');
+      if (!played) playEmotionalDamageSynth();
+    }
   }
 }
 
