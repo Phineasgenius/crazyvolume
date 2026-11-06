@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMOTIONAL DAMAGE CALCULATOR</title>
+  <meta name="description" content="Measure your emotional damage and aura loss from life's most embarrassing moments. Featuring speed math challenges, calculator shaming, and dramatic damage reports." />
+  <meta property="og:title" content="EMOTIONAL DAMAGE CALCULATOR 💀" />
+  <meta property="og:description" content="How cooked are you? Find out." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💀</text></svg>" />
+</head>
+<body>
+
+<!-- DAMAGE FLASH OVERLAY -->
+<div class="damage-flash" id="damage-flash"></div>
+
+<!-- CALCULATOR SHAME OVERLAY -->
+<div class="shame-overlay" id="shame-overlay">
+  <div class="shame-title" id="shame-title">CALCULATOR DETECTED</div>
+  <div class="shame-msg" id="shame-msg"></div>
+  <button class="shame-dismiss" id="shame-dismiss">I accept my shame. Continue →</button>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="site-title">EMOTIONAL DAMAGE</div>
+  <div class="site-title" style="font-size: clamp(1.2rem, 4vw, 2.8rem); color: #bf00ff; text-shadow: 0 0 20px #bf00ff, 0 0 40px #ff1a1a;">CALCULATOR</div>
+  <div class="site-subtitle">Aura Loss · Rizz Drain · Sigma Collapse Assessment Tool</div>
+  <div class="emoji-row">💀 📉 😭 🔥 💔</div>
+</header>
+
+<div class="container">
+
+  <!-- SECTION 1: INCIDENT SELECTOR -->
+  <div class="panel">
+    <div class="panel-title"><span>⚠️</span> Step 1 — Select Your Incidents</div>
+    <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5;">
+      Choose every embarrassing, awkward, or catastrophic incident that has happened to you.
+      Be honest. We already know.
+    </p>
+    <div class="incident-grid" id="incident-grid">
+      <!-- Populated by app.js -->
+    </div>
+    <div class="selected-incidents-summary" id="incident-summary">
+      No incidents selected. We know you have some.
+    </div>
+  </div>
+
+  <!-- SECTION 2: DAMAGE MULTIPLIERS -->
+  <div class="panel">
+    <div class="panel-title"><span>📡</span> Step 2 — Damage Multipliers</div>
+
+    <div class="multiplier-row">
+      <div class="multiplier-block">
+        <label>Witness Count</label>
+        <div class="val-display" id="witness-display">1 person</div>
+        <input type="range" id="witness-slider" min="0" max="100" value="1" step="1" />
+      </div>
+
+      <div class="multiplier-block">
+        <label>Time & Context</label>
+        <select class="time-select" id="time-select">
+          <option value="morning">Morning (casual)</option>
+          <option value="afternoon" selected>Afternoon (normal)</option>
+          <option value="work">Work / Professional setting</option>
+          <option value="school">School / Class</option>
+          <option value="presentation">Live Presentation</option>
+          <option value="party">Party / Social event</option>
+          <option value="night">Late night (barely anyone saw)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="toggle-row">
+      <label class="toggle-switch">
+        <input type="checkbox" id="recorded-toggle" />
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="toggle-label">🎥 Was it recorded / posted online? <span style="color:var(--red); font-weight:700;">×2.2 multiplier</span></span>
+    </div>
+  </div>
+
+  <!-- SECTION 3: SPEED MATH GAUNTLET -->
+  <div class="panel">
+    <div class="panel-title"><span>🧠</span> Step 3 — Speed Math Gauntlet</div>
+    <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5;">
+      5 rapid-fire math questions. 5 seconds each. Every failure adds <strong style="color:var(--red)">+15 Damage</strong>.
+      If you can't do basic math, that's your fault. No calculator. We're watching.
+    </p>
+
+    <div class="gauntlet-status">
+      <div class="gauntlet-score">
+        Failures: <span class="val" id="gauntlet-fail-count">0</span> &nbsp;|&nbsp;
+        Passed: <span style="color:var(--green)" id="gauntlet-pass-count">0</span>
+      </div>
+      <button class="start-gauntlet-btn" id="gauntlet-btn">▶ START GAUNTLET</button>
+    </div>
+
+    <div class="math-challenge-box" id="math-challenge-box">
+      <div class="gauntlet-round-info" id="gauntlet-round-info">Round 1 of 5</div>
+      <div class="math-timer-bar">
+        <div class="math-timer-fill" id="math-timer-fill" style="width: 100%"></div>
+      </div>
+      <div class="math-question" id="math-question">847 × 23 = ?</div>
+      <div class="math-hint" id="math-hint">No calculator. Good luck.</div>
+      <div class="math-input-row">
+        <input type="number" class="math-input" id="math-input" placeholder="Your answer" autocomplete="off" />
+        <button class="math-submit-btn" id="math-submit-btn">Submit</button>
+      </div>
+      <div class="math-result-msg" id="math-result-msg"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: FAKE CALCULATOR ZONE -->
+  <div class="panel">
+    <div class="panel-title"><span>🧮</span> Step 4 — The Calculator (DO NOT USE)</div>
+    <div class="calc-warning">
+      ⚠️ WARNING: Using this calculator will result in immediate emotional damage, public shaming, and automatic score penalties. We literally told you to do it in your head.
+    </div>
+
+    <div class="fake-calc">
+      <div class="calc-display">
+        <div class="calc-history calc-display-history" id="calc-display-history"></div>
+        <div class="calc-current calc-display-current" id="calc-display-current">0</div>
+      </div>
+      <div class="calc-buttons">
+        <button class="calc-btn clear" onclick="calcPress('C')">C</button>
+        <button class="calc-btn op" onclick="calcPress('±')">±</button>
+        <button class="calc-btn op" onclick="calcPress('%')">%</button>
+        <button class="calc-btn op" onclick="calcPress('÷')">÷</button>
+
+        <button class="calc-btn" onclick="calcPress('7')">7</button>
+        <button class="calc-btn" onclick="calcPress('8')">8</button>
+        <button class="calc-btn" onclick="calcPress('9')">9</button>
+        <button class="calc-btn op" onclick="calcPress('×')">×</button>
+
+        <button class="calc-btn" onclick="calcPress('4')">4</button>
+        <button class="calc-btn" onclick="calcPress('5')">5</button>
+        <button class="calc-btn" onclick="calcPress('6')">6</button>
+        <button class="calc-btn op" onclick="calcPress('-')">−</button>
+
+        <button class="calc-btn" onclick="calcPress('1')">1</button>
+        <button class="calc-btn" onclick="calcPress('2')">2</button>
+        <button class="calc-btn" onclick="calcPress('3')">3</button>
+        <button class="calc-btn op" onclick="calcPress('+')">+</button>
+
+        <button class="calc-btn" style="grid-column: span 2;" onclick="calcPress('0')">0</button>
+        <button class="calc-btn" onclick="calcPress('.')">.</button>
+        <button class="calc-btn eq" onclick="calcPress('=')">=</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALCULATE BUTTON -->
+  <div class="calculate-section">
+    <button class="calculate-btn" id="calculate-btn">
+      💀 CALCULATE MY DAMAGE 💀
+    </button>
+  </div>
+
+  <!-- SECTION 5: DAMAGE REPORT -->
+  <div class="panel damage-report" id="damage-report">
+    <div class="report-header">
+      <div class="report-title">⚠ DAMAGE REPORT ⚠</div>
+      <div class="report-id" id="report-id">REPORT #000000</div>
+    </div>
+
+    <div class="stat-bars">
+      <div class="stat-bar-row">
+        <div class="stat-bar-label">
+          <span class="stat-bar-name red">💀 Emotional Damage</span>
+          <span class="stat-bar-value" id="ed-val">0%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill red" id="ed-bar"></div></div>
+      </div>
+
+      <div class="stat-bar-row">
+        <div class="stat-bar-label">
+          <span class="stat-bar-name purple">👻 Aura Loss</span>
+          <span class="stat-bar-value" id="al-val">0%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill purple" id="al-bar"></div></div>
+      </div>
+
+      <div class="stat-bar-row">
+        <div class="stat-bar-label">
+          <span class="stat-bar-name cyan">✨ Rizz Remaining</span>
+          <span class="stat-bar-value" id="rr-val">0%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill cyan" id="rr-bar"></div></div>
+      </div>
+
+      <div class="stat-bar-row">
+        <div class="stat-bar-label">
+          <span class="stat-bar-name green">📈 Sigma Score</span>
+          <span class="stat-bar-value" id="ss-val">0%</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill green" id="ss-bar"></div></div>
+      </div>
+    </div>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="sc-label">Status</div>
+        <div class="sc-value purple" id="sc-sigma-title">🤖 Certified NPC</div>
+      </div>
+      <div class="score-card">
+        <div class="sc-label">Sigma Score</div>
+        <div class="sc-value cyan" id="sc-sigma">0</div>
+      </div>
+      <div class="score-card">
+        <div class="sc-label">Aura Drained</div>
+        <div class="sc-value red" id="sc-aura">-0</div>
+      </div>
+      <div class="score-card">
+        <div class="sc-label">Math Score</div>
+        <div class="sc-value yellow" id="sc-math">0/5</div>
+      </div>
+    </div>
+
+    <div class="sarcastic-remark" id="sarcastic-remark">
+      Your ancestors are physically cringing from beyond the grave.
+    </div>
+
+    <div class="recovery-box">
+      <div class="recovery-item">
+        <div class="ri-label">Estimated Recovery Time</div>
+        <div class="ri-value" id="ri-time">Unknown</div>
+      </div>
+      <div class="recovery-item">
+        <div class="ri-label">Therapy Level Required</div>
+        <div class="ri-value" id="ri-therapy">Unknown</div>
+      </div>
+      <div class="recovery-item">
+        <div class="ri-label">Survival Probability</div>
+        <div class="ri-value" id="ri-survival">Unknown</div>
+      </div>
+      <div class="recovery-item">
+        <div class="ri-label">Witness Count</div>
+        <div class="ri-value" id="ri-witnesses">0</div>
+      </div>
+    </div>
+
+    <div class="report-actions">
+      <button class="report-btn share" id="share-btn">📋 Copy Report</button>
+      <button class="report-btn reset" id="reset-btn">🔄 Calculate Again</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>EMOTIONAL DAMAGE CALCULATOR</strong> — Not responsible for any additional emotional damage caused by your results.<br />
+  Built with 100% pure suffering, Web Audio API, and sarcasm. No real feelings were considered.
+</footer>
+
+<script src="sounds.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
