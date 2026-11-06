@@ -485,9 +485,9 @@ function calculateDamage() {
 
 function displayDamageReport({ emotionalDamage, auraLoss, rizzRemaining, sigmaScore, rawDamage }) {
   // Play dramatic sound
-  if (emotionalDamage >= 80) playEmotionalDamage();
-  else if (emotionalDamage >= 50) playVineBoom();
-  else playBrainrot();
+  if (emotionalDamage >= 60) playEmotionalDamage();
+  else if (emotionalDamage >= 30) playFailure();
+  else playVineBoom();
 
   flashDamage();
   shakeScreen();
